@@ -1,0 +1,10 @@
+return {
+  {
+    dir = "/home/thiennguyen/playground/herdr-workbench/nvim",
+    name = "herdr-workbench",
+    lazy = false,
+    config = function()
+      require("herdr-workbench").setup()
+    end,
+  },
+}
