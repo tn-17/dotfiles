@@ -1,0 +1,15 @@
+background = 000000
+shell-integration = zsh
+window-width = 102
+window-height = 32
+font-family = "JetBrainsMono Nerd Font"
+theme = "Ubuntu"
+unfocused-split-opacity = 1
+cursor-click-to-move = false
+
+# keybinds
+keybind = ctrl+shift+alt+up=resize_split:up,10
+keybind = ctrl+shift+alt+down=resize_split:down,10
+keybind = ctrl+shift+alt+left=resize_split:left,10
+keybind = ctrl+shift+alt+right=resize_split:right,10
+keybind = ctrl+shift+w=close_surface

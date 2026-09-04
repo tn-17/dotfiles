@@ -1,0 +1,9 @@
+[opener]
+edit = [
+	{ run = 'NVIM_APPNAME="astrovim" nvim "$@"', block = true, desc = "nvim", for = "unix"}
+]
+
+[mgr]
+ratio = [ 1, 2, 5 ]
+show_hidden = true
+
