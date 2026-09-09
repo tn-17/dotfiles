@@ -39,49 +39,7 @@ focus_agent = "prefix+alt+1..9"
 last_pane = "prefix+space"
 
 [[keys.command]]
-key = "prefix+alt+o"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.focus-code"
-description = "Workbench: focus code"
-
-[[keys.command]]
-key = "prefix+alt+u"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.references"
-description = "Workbench: open visible reference"
-
-[[keys.command]]
-key = "prefix+alt+m"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.focus-main"
-description = "Workbench: focus Main"
-
-[[keys.command]]
-key = "prefix+alt+s"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.swap-omp-layout"
-description = "Workbench: swap OMP layout"
-
-[[keys.command]]
-key = "prefix+alt+r"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.review"
-description = "Workbench: review changes"
-
-[[keys.command]]
 key = "prefix+alt+a"
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.quick-actions"
 description = "Herdr Plus: Quick Actions"
-
-[[keys.command]]
-key = "prefix+shift+g"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.create-worktree"
-description = "Workbench: create GTR worktree"
-
-[[keys.command]]
-key = "prefix+alt+d"
-type = "plugin_action"
-command = "io.tn-17.herdr-workbench.delete-worktree"
-description = "Workbench: select and delete GTR worktree"
