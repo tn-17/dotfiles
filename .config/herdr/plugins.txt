@@ -1,0 +1,4 @@
+herdr plugin install
+- ChmaraX/herdr-nvim
+- cloudmanic/herdr-plus/herdr-plus
+- zenbu-labs/terminal-browser/herdr-plugin

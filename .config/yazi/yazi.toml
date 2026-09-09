@@ -1,6 +1,6 @@
 [opener]
 edit = [
-	{ run = 'NVIM_APPNAME="astrovim" nvim "$@"', block = true, desc = "nvim", for = "unix"}
+	{ run = 'nvim "$@"', block = true, desc = "nvim", for = "unix"}
 ]
 
 [mgr]
