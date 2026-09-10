@@ -27,19 +27,47 @@ kitty_graphics = true
 
 [keys]
 prefix = "ctrl+space"
-new_worktree = ""
+new_worktree = "prefix+shift+g"
 open_worktree = "prefix+shift+o"
-remove_worktree = ""
+remove_worktree = "prefix+shift+d"
+close_workspace = "prefix+shift+x"
 previous_workspace = "prefix+alt+h"
 next_workspace = "prefix+alt+l"
+goto = "prefix+alt+g"
+open_notification_target = "prefix+shift+f"
 switch_workspace = "prefix+shift+1..9"
 previous_agent = "prefix+alt+k"
 next_agent = "prefix+alt+j"
 focus_agent = "prefix+alt+1..9"
 last_pane = "prefix+space"
+move_tab_previous = "prefix+shift+left"
+move_tab_next = "prefix+shift+right"
+edit_scrollback = "prefix+shift+e"
+resize_pane_left = "ctrl+shift+alt+left"
+resize_pane_down = "ctrl+shift+alt+down"
+resize_pane_up = "ctrl+shift+alt+up"
+resize_pane_right = "ctrl+shift+alt+right"
 
 [[keys.command]]
-key = "prefix+alt+a"
+key = "prefix+e"
 type = "plugin_action"
-command = "cloudmanic.herdr-plus.quick-actions"
-description = "Herdr Plus: Quick Actions"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "open file from agent output"
+
+[[keys.command]]
+key = "prefix+shift+v"
+type = "plugin_action"
+command = "chmarax.gitview.toggle" # sidebar in the current tab
+description = "git view sidebar"
+
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "chmarax.gitview.toggle-tab" # dedicated gitview tab
+description = "git view tab"
