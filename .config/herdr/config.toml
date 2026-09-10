@@ -51,13 +51,13 @@ resize_pane_right = "ctrl+shift+alt+right"
 [[keys.command]]
 key = "prefix+e"
 type = "plugin_action"
-command = "chmarax.herdr-nvim.toggle"
+command = "herdr-nvim.toggle"
 description = "nvim sidebar"
 
 [[keys.command]]
-key = "prefix+o"
+key = "prefix+f"
 type = "plugin_action"
-command = "chmarax.herdr-nvim.pick-file"
+command = "herdr-nvim.pick-file"
 description = "open file from agent output"
 
 [[keys.command]]
@@ -71,3 +71,27 @@ key = "prefix+g"
 type = "plugin_action"
 command = "chmarax.gitview.toggle-tab" # dedicated gitview tab
 description = "git view tab"
+
+[[keys.command]]
+key = "prefix+j"
+type = "plugin_action"
+command = "xzedx.easyjump.open"
+description = "easyjump: hint jump"
+
+[[keys.command]]
+key = "prefix+b"
+type = "plugin_action"
+command = "xzedx.easyjump.back"
+description = "easyjump: jump back"
+
+[[keys.command]]
+key = "prefix+l"
+type = "plugin_action"
+command = "xzedx.easyjump.open-list"
+description = "easyjump: list popup"
+
+[ui.sidebar.spaces]
+rows = [["state_icon", { token = "$hint", fg = "#f9e2af", bold = true }, "workspace"], ["branch", "git_status"]]
+
+[ui.sidebar.agents]
+rows = [["state_icon", { token = "$hint", fg = "#f9e2af", bold = true }, "workspace", "tab"], ["agent"]]

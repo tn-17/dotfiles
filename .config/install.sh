@@ -3,7 +3,7 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-readonly CONFIG_TARGET="${HOME}/.config"
+readonly CONFIG_TARGET="${XDG_CONFIG_HOME:-${HOME}/.config}"
 readonly COMPONENTS=(astrovim ghostty herdr tuxedo yazi)
 
 copy_file() {
@@ -32,21 +32,6 @@ copy_directory_contents() {
     cp -a -- "$source/." "$target/"
 }
 
-install_ghostty() {
-    local source="$SCRIPT_DIR/ghostty/config.ghostty"
-    local target="$CONFIG_TARGET/ghostty/config.ghostty"
-
-    if [[ ! -f "$source" ]]; then
-        source="$SCRIPT_DIR/ghostty/config"
-    fi
-
-    if [[ -f "$CONFIG_TARGET/ghostty/config" && ! -f "$target" ]]; then
-        target="$CONFIG_TARGET/ghostty/config"
-    fi
-
-    copy_file "$source" "$target"
-}
-
 install_component() {
     local component=$1
 
@@ -55,11 +40,10 @@ install_component() {
             copy_directory_contents "$SCRIPT_DIR/astrovim" "$CONFIG_TARGET/nvim"
             ;;
         ghostty)
-            install_ghostty
+            copy_file "$SCRIPT_DIR/ghostty/config.ghostty" "$CONFIG_TARGET/ghostty/config.ghostty"
             ;;
         herdr)
             copy_file "$SCRIPT_DIR/herdr/config.toml" "$CONFIG_TARGET/herdr/config.toml"
-            copy_file "$SCRIPT_DIR/herdr/plugins.txt" "$CONFIG_TARGET/herdr/plugins.txt"
             ;;
         tuxedo)
             copy_file "$SCRIPT_DIR/tuxedo/config.toml" "$CONFIG_TARGET/tuxedo/config.toml"
@@ -79,11 +63,11 @@ interactive multi-select picker when fzf is available; otherwise prompt for
 component names or numbers separated by spaces or commas.
 
 Components:
-  astrovim AstroNvim config -> ~/.config/nvim
-  ghostty  Ghostty config -> ~/.config/ghostty/config.ghostty
-  herdr    Herdr config and plugin list -> ~/.config/herdr
-  tuxedo   Tuxedo config -> ~/.config/tuxedo/config.toml
-  yazi     Yazi config -> ~/.config/yazi/yazi.toml
+  astrovim AstroNvim config -> XDG config directory/nvim
+  ghostty  Ghostty config -> XDG config directory/ghostty/config.ghostty
+  herdr    Herdr config -> XDG config directory/herdr
+  tuxedo   Tuxedo config -> XDG config directory/tuxedo/config.toml
+  yazi     Yazi config -> XDG config directory/yazi/yazi.toml
 
 Options:
   -i, --interactive  Prompt for components explicitly
@@ -96,7 +80,7 @@ print_components() {
     printf 'Available components:\n'
     printf '  1) astrovim AstroNvim config\n'
     printf '  2) ghostty  Ghostty config\n'
-    printf '  3) herdr    Herdr config and plugin list\n'
+    printf '  3) herdr    Herdr config\n'
     printf '  4) tuxedo   Tuxedo config\n'
     printf '  5) yazi     Yazi config\n'
 }

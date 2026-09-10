@@ -1,0 +1,3 @@
+ChmaraX/herdr-gitview
+jtnovellis/herdr-nvim
+xzedx/herdr-easyjump

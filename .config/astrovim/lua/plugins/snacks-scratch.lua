@@ -159,6 +159,57 @@ These mappings appear when a language server supports the operation.
 - `<Space>gc` — Search repository commits
 - `<Space>tl` — Open Lazygit when installed
 
+## Herdr workspace and Gitview
+
+Herdr's global prefix is `<C-Space>`. Press it, release it, then press the
+next key.
+
+- `<C-Space>` then `e` — Toggle or focus the jtnovellis Neovim sidebar
+- `<C-Space>` then `f` — Pick a file touched by the agent
+- `<C-Space>` then `<S-v>` — Toggle Gitview in the current tab
+- `<C-Space>` then `g` — Open or focus the dedicated Gitview tab
+
+## Gitview
+
+These keys work inside the Gitview pane.
+
+- `j` / `k` or arrows — Move through changed files; the diff follows the selection
+- `Enter` — Open the selected file in real Neovim at its first changed line
+- `s` / `u` — Stage / unstage the selected file or directory
+- `x` — Discard the selected change; confirm before it is removed
+- `c` — Commit; write the message in Neovim, then `:wq` to commit or `:q!` to cancel
+- `w` — Toggle worktree changes and changes against the branch base
+- `Tab` — Toggle the unstaged and staged diff for the selected file
+- `l` — Browse commit history; `w` filters to commits added by this branch
+- `r` — Refresh the view
+- `?` — Open Gitview help
+- `q` / `<Esc>` — Close Gitview
+- `v`, then `j` / `k` — Select diff lines for an agent review note
+- `a` — Annotate the selected diff lines; type the note and press `<Enter>`
+- `p` — Pick an agent and paste the notes into its input
+- `n` — Open the notes view; `d` deletes the selected note
+
+## jtnovellis/herdr-nvim
+
+`<Space>` is the Neovim leader key. These mappings work in normal Neovim
+and in the Herdr Neovim sidebar.
+
+- `<Space>ac` — Ask the agent about the current line; Visual mode asks about the selection
+- `<Space>ar` — Follow up with the last agent, without attaching code
+- `<Space>aa` — Queue a comment on the current line or Visual selection
+- `<Space>al` — List annotations
+- `<Space>as` / `<Space>aS` — Paste annotations into the agent / send them
+- `<Space>af` — Pick a file the agent touched this session
+- `]n` / `[n` — Next / previous annotation
+- `]r` / `[r` — Next / previous edit made by the agent
+- `<Space>au` — Revert the agent edit under the cursor
+- `<Space>ak` — Keep the agent edit under the cursor
+- `<Space>at` — Choose which agent receives `HerdrAsk`
+- `<Space>ag` — List agents visible from the current workspace
+- `:HerdrPreview` — Preview the exact prompt without sending it
+- `:HerdrReplyView` — Focus the agent's reply window
+- `:HerdrClear` — Clear all annotations
+
 ## Completion while typing
 
 - `<C-Space>` — Open completion suggestions

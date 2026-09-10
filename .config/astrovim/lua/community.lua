@@ -8,7 +8,7 @@ return {
   { import = "astrocommunity.pack.lua" },
   -- import/override with your plugins folder
   { import = "astrocommunity.pack.typescript" },
-  { import = "astrocommunity.motion.hop-nvim" },
+  { import = "astrocommunity.motion.flash-nvim" },
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
   { import = "astrocommunity.file-explorer.yazi-nvim" },
   { import = "astrocommunity.search.grug-far-nvim" },

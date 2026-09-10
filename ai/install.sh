@@ -5,6 +5,7 @@ set -euo pipefail
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly AGENTS_TARGET="${HOME}/.omp/agent/AGENTS.md"
 readonly SKILLS_TARGET="${HOME}/.agents/skills"
+readonly HERDR_PLUGIN_LIST_SOURCE="$SCRIPT_DIR/herdr/plugins.txt"
 readonly COMPONENTS=(agents herdr terminal-browser vera)
 
 copy_file() {
@@ -33,6 +34,35 @@ copy_directory_contents() {
     cp -a -- "$source/." "$target/"
 }
 
+install_herdr_plugins() {
+    local plugin
+    local failed=0
+
+    if [[ ! -f "$HERDR_PLUGIN_LIST_SOURCE" ]]; then
+        printf 'install: skipping missing Herdr plugin list: %s\n' "$HERDR_PLUGIN_LIST_SOURCE" >&2
+        return 0
+    fi
+
+    if ! command -v herdr >/dev/null 2>&1; then
+        printf 'install: skipping Herdr plugins; herdr is not installed\n' >&2
+        return 0
+    fi
+
+    while IFS= read -r plugin || [[ -n "$plugin" ]]; do
+        if [[ -z "${plugin//[[:space:]]/}" ]]; then
+            continue
+        fi
+
+        printf 'install: installing Herdr plugin: %s\n' "$plugin"
+        if ! herdr plugin install --yes "$plugin"; then
+            printf 'install: unable to install Herdr plugin: %s\n' "$plugin" >&2
+            failed=1
+        fi
+    done < "$HERDR_PLUGIN_LIST_SOURCE"
+
+    return "$failed"
+}
+
 install_component() {
     local component=$1
 
@@ -41,7 +71,8 @@ install_component() {
             copy_file "$SCRIPT_DIR/AGENTS.md" "$AGENTS_TARGET"
             ;;
         herdr)
-            copy_directory_contents "$SCRIPT_DIR/herdr" "$SKILLS_TARGET/herdr"
+            copy_file "$SCRIPT_DIR/herdr/SKILL.md" "$SKILLS_TARGET/herdr/SKILL.md"
+            install_herdr_plugins
             ;;
         terminal-browser)
             copy_directory_contents "$SCRIPT_DIR/terminal-browser" "$SKILLS_TARGET/terminal-browser"
@@ -62,7 +93,7 @@ component names or numbers separated by spaces or commas.
 
 Components:
   agents           AGENTS.md -> ~/.omp/agent/AGENTS.md
-  herdr            herdr skill -> ~/.agents/skills/herdr
+  herdr            herdr skill -> ~/.agents/skills/herdr; install listed plugins
   terminal-browser terminal-browser skill -> ~/.agents/skills/terminal-browser
   vera             Vera skill -> ~/.agents/skills/vera
 
@@ -76,7 +107,7 @@ EOF
 print_components() {
     printf 'Available components:\n'
     printf '  1) agents           AGENTS.md\n'
-    printf '  2) herdr            herdr skill\n'
+    printf '  2) herdr            herdr skill; install listed plugins\n'
     printf '  3) terminal-browser terminal-browser skill\n'
     printf '  4) vera             Vera skill\n'
 }

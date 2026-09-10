@@ -3,9 +3,7 @@
 set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-readonly CONFIG_SOURCE="${HOME}/.config"
-readonly HERDR_PLUGINS_SOURCE="${CONFIG_SOURCE}/herdr/plugins.json"
-readonly HERDR_PLUGIN_LIST_TARGET="${SCRIPT_DIR}/herdr/plugins.txt"
+readonly CONFIG_SOURCE="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 copy_file() {
     local source=$1
@@ -20,9 +18,13 @@ copy_file() {
     cp -- "$source" "$target"
 }
 
-copy_directory_contents() {
+sync_directory_contents() {
     local source=$1
     local target=$2
+    local entry
+    local source_entry
+    local name
+    local nullglob_was_set=0
 
     if [[ ! -d "$source" ]]; then
         printf 'update: skipping missing directory: %s\n' "$source" >&2
@@ -30,73 +32,35 @@ copy_directory_contents() {
     fi
 
     mkdir -p -- "$target"
+
+    if shopt -q nullglob; then
+        nullglob_was_set=1
+    fi
+    shopt -s nullglob
+
+    for entry in "$target"/.[!.]* "$target"/..?* "$target"/*; do
+        name=${entry##*/}
+        source_entry="$source/$name"
+        if [[
+            (! -e "$source_entry" && ! -L "$source_entry") ||
+            (-L "$entry" && ! -L "$source_entry") ||
+            (! -L "$entry" && -L "$source_entry") ||
+            (-d "$entry" && ! -d "$source_entry") ||
+            (! -d "$entry" && -d "$source_entry")
+        ]]; then
+            rm -rf -- "$entry"
+        fi
+    done
+
+    if ((nullglob_was_set == 0)); then
+        shopt -u nullglob
+    fi
+
     cp -a -- "$source/." "$target/"
 }
 
-update_ghostty() {
-    local source
-    local target="$SCRIPT_DIR/ghostty/config"
-
-    if [[ -f "$CONFIG_SOURCE/ghostty/config.ghostty" ]]; then
-        source="$CONFIG_SOURCE/ghostty/config.ghostty"
-    elif [[ -f "$CONFIG_SOURCE/ghostty/config" ]]; then
-        source="$CONFIG_SOURCE/ghostty/config"
-    else
-        printf 'update: skipping missing Ghostty config: %s or %s\n' \
-            "$CONFIG_SOURCE/ghostty/config.ghostty" \
-            "$CONFIG_SOURCE/ghostty/config" >&2
-        return 0
-    fi
-
-    if [[ -f "$SCRIPT_DIR/ghostty/config.ghostty" ]]; then
-        target="$SCRIPT_DIR/ghostty/config.ghostty"
-    fi
-
-    copy_file "$source" "$target"
-}
-
-gather_herdr_plugin_list() {
-    local target_directory
-    local temporary
-
-    if [[ ! -f "$HERDR_PLUGINS_SOURCE" ]]; then
-        printf 'update: skipping missing Herdr plugin metadata: %s\n' "$HERDR_PLUGINS_SOURCE" >&2
-        return 0
-    fi
-
-    if ! command -v jq >/dev/null 2>&1; then
-        printf 'update: skipping Herdr plugin list; jq is not installed\n' >&2
-        return 0
-    fi
-
-    target_directory="$(dirname -- "$HERDR_PLUGIN_LIST_TARGET")"
-    mkdir -p -- "$target_directory"
-    temporary="$(mktemp -- "$target_directory/.plugins.txt.XXXXXX")"
-
-    if ! jq -er '
-        if type != "array" then
-            error("expected an array")
-        else
-            "herdr plugin install",
-            (.[] |
-                select(.source.kind? == "github") |
-                select((.source.owner? | type) == "string") |
-                select((.source.repo? | type) == "string") |
-                "- \(.source.owner)/\(.source.repo)")
-        end
-    ' "$HERDR_PLUGINS_SOURCE" >"$temporary"; then
-        rm -f -- "$temporary"
-        printf 'update: unable to parse Herdr plugin metadata: %s\n' "$HERDR_PLUGINS_SOURCE" >&2
-        return 0
-    fi
-
-    chmod 0644 "$temporary"
-    mv -- "$temporary" "$HERDR_PLUGIN_LIST_TARGET"
-}
-
-copy_directory_contents "$CONFIG_SOURCE/nvim" "$SCRIPT_DIR/astrovim"
-update_ghostty
+sync_directory_contents "$CONFIG_SOURCE/nvim" "$SCRIPT_DIR/astrovim"
+copy_file "$CONFIG_SOURCE/ghostty/config.ghostty" "$SCRIPT_DIR/ghostty/config.ghostty"
 copy_file "$CONFIG_SOURCE/herdr/config.toml" "$SCRIPT_DIR/herdr/config.toml"
 copy_file "$CONFIG_SOURCE/tuxedo/config.toml" "$SCRIPT_DIR/tuxedo/config.toml"
 copy_file "$CONFIG_SOURCE/yazi/yazi.toml" "$SCRIPT_DIR/yazi/yazi.toml"
-gather_herdr_plugin_list

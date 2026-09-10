@@ -1,4 +1,0 @@
-herdr plugin install
-- ChmaraX/herdr-gitview
-- jtnovellis/herdr-nvim
-- xzedx/herdr-easyjump
