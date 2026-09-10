@@ -1,5 +1,4 @@
 herdr plugin install
 - ChmaraX/herdr-gitview
-- ChmaraX/herdr-nvim
-- cloudmanic/herdr-plus/herdr-plus
-- zenbu-labs/terminal-browser/herdr-plugin
+- jtnovellis/herdr-nvim
+- xzedx/herdr-easyjump
