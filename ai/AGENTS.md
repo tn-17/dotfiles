@@ -1,8 +1,8 @@
 # Code Search
 
+Applies only for git project directories:
 <!-- vera:begin -->
-When working in a git project, use Vera before opening many files or running broad text search when you need to find where logic lives or how a feature works.
-
+Use Vera before opening many files or running broad text search when you need to find where logic lives or how a feature works.
 - `vera search "query"` for semantic code search. Describe behavior: "JWT validation", not "auth". If one phrasing misses, try 2-3 varied queries or add `--intent "goal"`.
 - `vera search ... --changed`, `--since <rev>`, or `--base <rev>` when the task is limited to modified files or a PR diff
 - `vera grep "pattern"` for exact text or regex in indexed files
